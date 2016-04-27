@@ -6,12 +6,12 @@
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
         <relativePath>../master/pom.xml</relativePath>
-        <version>10.7</version>
+        <version>10-SNAPSHOT</version>
     </parent>
 
     <name>Sakai SCORM Project</name>
     <artifactId>sakai-scorm-base</artifactId>
-    <version>10.7</version>
+    <version>10-SNAPSHOT</version>
     <packaging>pom</packaging>
     <organization>
         <name>Sakai Project</name>
@@ -95,6 +95,24 @@
                     <tagNameFormat>${project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.8</version>
+                <configuration>
+                    <licenseName>ecl_v2</licenseName>
+                    <licenseResolver>classpath://org/sakaiproject</licenseResolver>
+                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.sakaiproject.license</groupId>
+                        <artifactId>ecl-license</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
