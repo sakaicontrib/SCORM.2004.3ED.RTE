@@ -25,7 +25,6 @@ import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.Component;
-import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
@@ -49,7 +48,8 @@ import org.sakaiproject.scorm.service.api.ScormContentService;
 import org.sakaiproject.scorm.service.api.ScormResourceService;
 import org.sakaiproject.scorm.ui.console.pages.ConsoleBasePage;
 import org.sakaiproject.scorm.ui.console.pages.PackageListPage;
-import org.sakaiproject.wicket.markup.html.form.CancelButton;
+import org.sakaiproject.wicket.ajax.markup.html.form.SakaiAjaxButton;
+import org.sakaiproject.wicket.ajax.markup.html.form.SakaiAjaxCancelButton;
 
 @Slf4j
 public class UploadPage extends ConsoleBasePage 
@@ -111,9 +111,9 @@ public class UploadPage extends ConsoleBasePage
             add( fileUploadField );
 
             // SCO-98 - disable buttons on submit, add spinner
-            final CancelButton btnCancel = new CancelButton( "btnCancel", PackageListPage.class );
+            final SakaiAjaxCancelButton btnCancel = new SakaiAjaxCancelButton( "btnCancel", PackageListPage.class );
             btnCancel.setOutputMarkupId( true );
-            IndicatingAjaxButton btnSubmit = new IndicatingAjaxButton( "btnSubmit", this )
+            SakaiAjaxButton btnSubmit = new SakaiAjaxButton( "btnSubmit", this )
             {
                 private static final long serialVersionUID = 1L;
 
@@ -144,6 +144,8 @@ public class UploadPage extends ConsoleBasePage
                 @Override
                 protected void onSubmit( AjaxRequestTarget target )
                 {
+                    target.appendJavaScript( JS_RESIZE_IFRAME );
+
                     final List<FileUpload> uploads = fileUploadField.getFileUploads();
                     if( uploads != null )
                     {

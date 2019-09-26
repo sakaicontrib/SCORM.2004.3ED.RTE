@@ -48,7 +48,7 @@ import org.sakaiproject.scorm.ui.console.pages.PackageConfigurationPage.Assessme
 import org.sakaiproject.scorm.ui.console.pages.PackageConfigurationPage.GradebookSetup;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.tool.api.Placement;
-import org.sakaiproject.wicket.markup.html.form.CancelButton;
+import org.sakaiproject.wicket.ajax.markup.html.form.SakaiAjaxCancelButton;
 
 @Slf4j
 public class PackageRemovePage extends ConsoleBasePage
@@ -108,7 +108,7 @@ public class PackageRemovePage extends ConsoleBasePage
 			DataTable removeTable = new DataTable( "removeTable", columns, new ListDataProvider( list ), 3 );
 
 			final Label alertLabel = new Label( "alert", new ResourceModel( "verify.remove" ) );
-			final CancelButton btnCancel = new CancelButton( "btnCancel", PackageListPage.class );
+			final SakaiAjaxCancelButton btnCancel = new SakaiAjaxCancelButton( "btnCancel", PackageListPage.class );
 			IndicatingAjaxButton btnSubmit = new IndicatingAjaxButton( "btnSubmit", this )
 			{
 				private static final long serialVersionUID = 1L;

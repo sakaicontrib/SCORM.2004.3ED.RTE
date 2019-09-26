@@ -16,6 +16,7 @@
 package org.sakaiproject.scorm.ui.console.pages;
 
 import java.io.Serializable;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,14 +25,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.adl.validator.contentpackage.LaunchData;
-import org.apache.wicket.Component;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
-import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
-import org.apache.wicket.extensions.yui.calendar.DateTimeField;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -44,8 +45,8 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.sakaiproject.component.cover.ComponentManager;
 
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.scorm.dao.api.ContentPackageManifestDao;
 import org.sakaiproject.scorm.model.api.ContentPackage;
 import org.sakaiproject.scorm.model.api.ContentPackageManifest;
@@ -54,7 +55,9 @@ import org.sakaiproject.scorm.service.api.ScormContentService;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.api.ToolManager;
-import org.sakaiproject.wicket.markup.html.form.CancelButton;
+import org.sakaiproject.wicket.ajax.markup.html.form.SakaiAjaxButton;
+import org.sakaiproject.wicket.ajax.markup.html.form.SakaiAjaxCancelButton;
+import org.sakaiproject.wicket.markup.html.datepicker.SakaiDateTimeField;
 import org.sakaiproject.wicket.model.DecoratedPropertyModel;
 import org.sakaiproject.wicket.model.SimpleDateFormatPropertyModel;
 
@@ -182,6 +185,16 @@ public class PackageConfigurationPage extends ConsoleBasePage
 
 	private String unlimitedMessage;
 
+	@Override
+	public void renderHead(IHeaderResponse response)
+	{
+		super.renderHead(response);
+
+		// For some reason calling setMainFrameHeightNow() on this page doesn't scroll to the top, because it thinks the coordinates are already 0,0
+		// So for this page, we just force to scroll to parent's top
+		response.render(OnDomReadyHeaderItem.forScript("parent.window.scrollTo(0,0);"));
+	}
+
 	public PackageConfigurationPage(PageParameters params)
 	{
 		super(params);
@@ -220,12 +233,15 @@ public class PackageConfigurationPage extends ConsoleBasePage
 		TextField nameField = new TextField("packageName", new PropertyModel(contentPackage, "title"));
 		nameField.setRequired(true);
 		form.add(nameField);
-		DateTimeField releaseOnDTF = new DateTimeField("releaseOnDTF", new PropertyModel(contentPackage, "releaseOn"));
-		releaseOnDTF.setRequired(true);
 
+		ZoneId tz = lms.getUserTimeService().getLocalTimeZone().toZoneId();
+		contentPackage.setSessionUserZoneID(tz);
+		SakaiDateTimeField releaseOnDTF = new SakaiDateTimeField("releaseOnDTF", new PropertyModel(contentPackage, "zonedReleaseOn"), tz, false);
+		releaseOnDTF.setRequired(true);
 		form.add(releaseOnDTF);
-		form.add(new DateTimeField("dueOnDTF", new PropertyModel(contentPackage, "dueOn")));
-		form.add(new DateTimeField("acceptUntilDTF", new PropertyModel(contentPackage, "acceptUntil")));
+
+		form.add(new SakaiDateTimeField("dueOnDTF", new PropertyModel(contentPackage, "zonedDueOn"), tz, true));
+		form.add(new SakaiDateTimeField("acceptUntilDTF", new PropertyModel(contentPackage, "zonedAcceptUntil"), tz, true));
 		form.add(new DropDownChoice("numberOfTries", new PropertyModel(contentPackage, "numberOfTries"), tryList, new TryChoiceRenderer()));
 		form.add(new CheckBox("hideTOC", new PropertyModel(contentPackage, "hideTOC")));
 		form.add(new Label("createdBy", new DisplayNamePropertyModel(contentPackage, "createdBy")));
@@ -268,11 +284,11 @@ public class PackageConfigurationPage extends ConsoleBasePage
 		});
 		scos.setVisible(gradebookSetup.isGradebookDefined() && !gradebookSetup.getAssessments().isEmpty());
 
-		final CancelButton btnCancel = new CancelButton("cancel", pageCancel);
+		final SakaiAjaxCancelButton btnCancel = new SakaiAjaxCancelButton("cancel", pageCancel);
 		btnCancel.setOutputMarkupId(true);
 		form.add(btnCancel);
 
-		final IndicatingAjaxButton btnSave = new IndicatingAjaxButton("save", form)
+		final SakaiAjaxButton btnSave = new SakaiAjaxButton("save", form)
 		{
 			private static final long serialVersionUID = 1L;
 
