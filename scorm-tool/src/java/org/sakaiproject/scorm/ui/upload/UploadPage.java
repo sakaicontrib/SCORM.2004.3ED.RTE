@@ -52,7 +52,7 @@ import org.sakaiproject.scorm.ui.console.pages.PackageListPage;
 import org.sakaiproject.wicket.markup.html.form.CancelButton;
 
 @Slf4j
-public class UploadPage extends ConsoleBasePage implements ScormConstants
+public class UploadPage extends ConsoleBasePage 
 {
     @SpringBean( name = "org.sakaiproject.component.api.ServerConfigurationService" )
     ServerConfigurationService serverConfigurationService;
@@ -163,7 +163,7 @@ public class UploadPage extends ConsoleBasePage implements ScormConstants
                                 String resourceId = resourceService.putArchive( upload.getInputStream(), upload.getClientFileName(), upload.getContentType(), false, NotificationService.NOTI_NONE );
                                 int status = contentService.storeAndValidate( resourceId, false, serverConfigurationService.getString( "scorm.zip.encoding", "UTF-8" ) );
 
-                                if( status == VALIDATION_SUCCESS )
+                                if( status == ScormConstants.VALIDATION_SUCCESS )
                                 {
                                     PageParameters params = new PageParameters();
                                     params.add( "uploadSuccess", MessageFormat.format( getString( "upload.success" ), upload.getClientFileName() ) );
@@ -244,24 +244,24 @@ public class UploadPage extends ConsoleBasePage implements ScormConstants
     {
         switch( status )
         {
-            case VALIDATION_WRONGMIMETYPE:
+            case ScormConstants.VALIDATION_WRONGMIMETYPE:
                 return "validate.wrong.mime.type";
-            case VALIDATION_NOFILE:
+            case ScormConstants.VALIDATION_NOFILE:
                 return "validate.no.file";
-            case VALIDATION_NOMANIFEST:
+            case ScormConstants.VALIDATION_NOMANIFEST:
                 return "validate.no.manifest";
-            case VALIDATION_NOTWELLFORMED:
+            case ScormConstants.VALIDATION_NOTWELLFORMED:
                 return "validate.not.well.formed";
-            case VALIDATION_NOTVALIDROOT:
+            case ScormConstants.VALIDATION_NOTVALIDROOT:
                 return "validate.not.valid.root";
-            case VALIDATION_NOTVALIDSCHEMA:
+            case ScormConstants.VALIDATION_NOTVALIDSCHEMA:
                 return "validate.not.valid.schema";
-            case VALIDATION_NOTVALIDPROFILE:
+            case ScormConstants.VALIDATION_NOTVALIDPROFILE:
                 return "validate.not.valid.profile";
-            case VALIDATION_MISSINGREQUIREDFILES:
+            case ScormConstants.VALIDATION_MISSINGREQUIREDFILES:
                 return "validate.missing.files";
-        };
-
-        return "upload.failed";
+            default:
+                return "upload.failed";
+        }
     }
 }
