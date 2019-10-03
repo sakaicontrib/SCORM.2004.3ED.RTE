@@ -287,35 +287,32 @@ public class PackageConfigurationPage extends ConsoleBasePage
 				}
 
 				// Only continue to update/save if there are no validation errors
-				if (!feedback.anyErrorMessage())
+				if (!feedback.anyErrorMessage() && gradebookSetup.isGradebookDefined())
 				{
-					if (gradebookSetup.isGradebookDefined())
+					String context = getContext();
+					List<AssessmentSetup> assessments = gradebookSetup.getAssessments();
+					for (AssessmentSetup assessmentSetup : assessments)
 					{
-						List<AssessmentSetup> assessments = gradebookSetup.getAssessments();
-						for (AssessmentSetup assessmentSetup : assessments)
+						boolean on = assessmentSetup.isSynchronizeSCOWithGradebook();
+						String assessmentExternalId = getAssessmentExternalId(gradebookSetup, assessmentSetup);
+						boolean has = gradebookExternalAssessmentService.isExternalAssignmentDefined(context, assessmentExternalId);
+						String fixedTitle = getItemTitle(assessmentSetup, context);
+						if (has && on)
 						{
-							boolean on = assessmentSetup.isSynchronizeSCOWithGradebook();
-							String assessmentExternalId = getAssessmentExternalId(gradebookSetup, assessmentSetup);
-							String context = getContext();
-							boolean has = gradebookExternalAssessmentService.isExternalAssignmentDefined(context, assessmentExternalId);
-							String fixedTitle = getItemTitle(assessmentSetup, context);
-							if (has && on)
-							{
-								gradebookExternalAssessmentService.updateExternalAssessment(context, assessmentExternalId, null, null, fixedTitle, assessmentSetup.numberOffPoints, gradebookSetup.getContentPackage().getDueOn());
-							}
-							else if (!has && on)
-							{
-								gradebookExternalAssessmentService.addExternalAssessment(context, assessmentExternalId, null, fixedTitle, assessmentSetup.numberOffPoints, gradebookSetup.getContentPackage().getDueOn(), "SCORM player", null);
-							}
-							else if (has && !on)
-							{
-								gradebookExternalAssessmentService.removeExternalAssessment(context, assessmentExternalId);
-							}
+							gradebookExternalAssessmentService.updateExternalAssessment(context, assessmentExternalId, null, null, fixedTitle, assessmentSetup.numberOffPoints, gradebookSetup.getContentPackage().getDueOn());
 						}
-
-						contentService.updateContentPackage(contentPackage);
-						setResponsePage(pageSubmit);
+						else if (!has && on)
+						{
+							gradebookExternalAssessmentService.addExternalAssessment(context, assessmentExternalId, null, fixedTitle, assessmentSetup.numberOffPoints, gradebookSetup.getContentPackage().getDueOn(), "SCORM player", null);
+						}
+						else if (has && !on)
+						{
+							gradebookExternalAssessmentService.removeExternalAssessment(context, assessmentExternalId);
+						}
 					}
+
+					contentService.updateContentPackage(contentPackage);
+					setResponsePage(pageSubmit);
 				}
 			}
 

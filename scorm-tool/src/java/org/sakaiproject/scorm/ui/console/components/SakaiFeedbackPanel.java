@@ -44,8 +44,8 @@ public class SakaiFeedbackPanel extends FeedbackPanel
 				return "sak-banner-info";
 			case FeedbackMessage.WARNING:
 				return "sak-banner-warn";
+			default:
+				return "sak-banner-error";
 		}
-
-		return "sak-banner-error";
 	}
 }
