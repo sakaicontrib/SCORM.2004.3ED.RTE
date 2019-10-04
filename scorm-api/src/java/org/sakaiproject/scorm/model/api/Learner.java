@@ -46,6 +46,6 @@ public class Learner implements Serializable, Comparable<Learner>
 	@Override
 	public int compareTo(Learner learner)
 	{
-		return this.sortName.compareTo(learner.sortName);
+		return sortName.compareTo(learner.sortName);
 	}
 }
