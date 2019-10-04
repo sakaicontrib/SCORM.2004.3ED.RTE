@@ -15,21 +15,28 @@
  */
 package org.sakaiproject.wicket.ajax.markup.html.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
+
 import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
+
 import org.sakaiproject.wicket.ajax.markup.html.listener.SakaiSpinnerAjaxCallListener;
 
 /**
- * Disables the button on click, sets the standard Sakai spinner on it, and removes it/re-enables the button after the Ajax call completes.
+ * Disables the button on click, sets the standard Sakai spinner on it, and removes it/re-enables the button after the AJAX call completes.
  *
- * @author plukasew
+ * @author plukasew, bjones86
  */
 public class SakaiAjaxButton extends AjaxButton
 {
 	protected boolean willRenderOnClick = false;
+	private List<String> elementsToDisable = new ArrayList<>();
 
 	public SakaiAjaxButton(String id)
 	{
@@ -42,7 +49,7 @@ public class SakaiAjaxButton extends AjaxButton
 	}
 
 	/**
-	 * Whether or not the button itself will be re-rendered as part of the ajax update
+	 * Whether or not the button itself will be re-rendered as part of the AJAX update
 	 * @param value true if button will be re-rendered
 	 * @return the button, for method chaining
 	 */
@@ -52,13 +59,28 @@ public class SakaiAjaxButton extends AjaxButton
 		return this;
 	}
 
+	/**
+	 * Set a list of HTML component IDs that should be disabled when the button is clicked.
+	 * @param elementsToDisable list of IDs that will be disabled on click
+	 * @return the button, for method chaining
+	 */
+	public SakaiAjaxButton setElementsToDisableOnClick(List<String> elementsToDisable)
+	{
+		if (CollectionUtils.isNotEmpty(elementsToDisable))
+		{
+			this.elementsToDisable = elementsToDisable;
+		}
+
+		return this;
+	}
+
 	@Override
 	protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
 	{
 		super.updateAjaxAttributes(attributes);
 		attributes.setChannel(new AjaxChannel("blocking", AjaxChannel.Type.ACTIVE));
 
-		AjaxCallListener listener = new SakaiSpinnerAjaxCallListener(getMarkupId(), willRenderOnClick);
+		AjaxCallListener listener = new SakaiSpinnerAjaxCallListener(getMarkupId(), willRenderOnClick, elementsToDisable);
 		attributes.getAjaxCallListeners().add(listener);
 	}
 }

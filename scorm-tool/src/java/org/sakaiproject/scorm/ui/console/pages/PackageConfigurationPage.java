@@ -18,6 +18,7 @@ package org.sakaiproject.scorm.ui.console.pages;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,10 +27,7 @@ import lombok.Setter;
 
 import org.adl.validator.contentpackage.LaunchData;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.attributes.AjaxCallListener;
-import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -284,11 +282,12 @@ public class PackageConfigurationPage extends ConsoleBasePage
 		});
 		scos.setVisible(gradebookSetup.isGradebookDefined() && !gradebookSetup.getAssessments().isEmpty());
 
-		final SakaiAjaxCancelButton btnCancel = new SakaiAjaxCancelButton("cancel", pageCancel);
+		final SakaiAjaxCancelButton btnCancel = new SakaiAjaxCancelButton("btnCancel", pageCancel);
 		btnCancel.setOutputMarkupId(true);
+		btnCancel.setElementsToDisableOnClick(Arrays.asList(new String[] {"btnSave"}));
 		form.add(btnCancel);
 
-		final SakaiAjaxButton btnSave = new SakaiAjaxButton("save", form)
+		final SakaiAjaxButton btnSave = new SakaiAjaxButton("btnSave", form)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -340,23 +339,9 @@ public class PackageConfigurationPage extends ConsoleBasePage
 				target.add(btnCancel);
 				target.appendJavaScript(JS_RESIZE_IFRAME);
 			}
-
-			@Override
-			protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
-			{
-				super.updateAjaxAttributes(attributes);
-				AjaxCallListener listener = new AjaxCallListener()
-				{
-					@Override
-					public CharSequence getAfterHandler(Component component)
-					{
-						return "this.disabled = true; document.getElementsByName( \"cancel\" )[0].disabled = true;";
-					}
-				};
-				attributes.getAjaxCallListeners().add(listener);
-			}
 		};
 		btnSave.setOutputMarkupId(true);
+		btnSave.setElementsToDisableOnClick(Arrays.asList(new String[] {"btnCancel"}));
 		form.add(btnSave);
 		add(form);
 	}

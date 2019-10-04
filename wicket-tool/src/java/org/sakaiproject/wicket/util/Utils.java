@@ -72,7 +72,7 @@ public class Utils
         }
 
         String relativePagePath = component.urlForListener(behavior, component.getPage().getPageParameters()).toString();
-        String url = null;
+        String url;
 
         if (!isRelative)
         {

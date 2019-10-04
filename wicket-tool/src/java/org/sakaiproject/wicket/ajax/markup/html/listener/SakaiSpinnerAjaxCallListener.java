@@ -15,9 +15,14 @@
  */
 package org.sakaiproject.wicket.ajax.markup.html.listener;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
+
 /**
  * Adds the Sakai overlay spinner to the component making the AJAX call
- * @author plukasew
+ * @author plukasew, bjones86
  */
 public class SakaiSpinnerAjaxCallListener extends AbstractSakaiSpinnerAjaxCallListener
 {
@@ -38,20 +43,74 @@ public class SakaiSpinnerAjaxCallListener extends AbstractSakaiSpinnerAjaxCallLi
 	/**
 	 * Constructor
 	 * @param componentMarkupId the markup id of the component making the AJAX call
-	 * @param componentWillRender whether the ajax call will result in the component being re-rendered
+	 * @param elementsToDisableOnClick the markup IDs of components that should be disabled when the component making the AJAX call is clicked
+	 */
+	public SakaiSpinnerAjaxCallListener(String componentMarkupId, List<String> elementsToDisableOnClick)
+	{
+		this(componentMarkupId, false, elementsToDisableOnClick);
+	}
+
+	/**
+	 * Constructor
+	 * @param componentMarkupId the markup id of the component making the AJAX call
+	 * @param componentWillRender whether the AJAX call will result in the component being re-rendered
 	 */
 	public SakaiSpinnerAjaxCallListener(String componentMarkupId, boolean componentWillRender)
+	{
+		this(componentMarkupId, componentWillRender, Collections.emptyList());
+	}
+
+	/**
+	 * Constructor
+	 * @param componentMarkupId the markup id of the component making the AJAX call
+	 * @param componentWillRender whether the AJAX call will result in the component being re-rendered
+	 * @param elementsToDisableOnClick the markup IDs of components that should be disabled when the component making the AJAX call is clicked
+	 */
+	public SakaiSpinnerAjaxCallListener(String componentMarkupId, boolean componentWillRender, List<String> elementsToDisableOnClick)
 	{
 		super(componentMarkupId, componentWillRender);
 
 		// on the client side, disable the control and show the spinner after click
 		onBefore(String.format(DISABLE_AND_SPIN, id, id));
 
+		// if we have supplemental HTML components to disable on click, set up the necessary JavaScript
+		appendJavaScriptForElements(elementsToDisableOnClick, true);
+
 		// if the control is re-rendered the disabled property will be set by wicket and the spinner
 		// class will not be on the component as wicket doesn't know about it
 		if (!willRender)
 		{
 			onComplete(String.format(ENABLE_AND_STOP, id, id));
+
+			// if we have supplemental HTML components to enable, set up the necessary JavaScript
+			appendJavaScriptForElements(elementsToDisableOnClick, false);
+		}
+	}
+
+	/**
+	 * Utility method to build JavaScript enable/disable commands for a list of HTML components
+	 * @param elementsToDisableOnClick list of HTML component IDs to enable or disable
+	 * @param disable true if elements should be disabled, false otherwise
+	 * @return the JavaScript required to disable or enable the given HTML element IDs, or empty string if no IDs are supplied
+	 */
+	private void appendJavaScriptForElements(List<String> elementsToDisableOnClick, boolean disable)
+	{
+		if (CollectionUtils.isNotEmpty(elementsToDisableOnClick))
+		{
+			StringBuilder javaScript = new StringBuilder();
+			for (String elementID : elementsToDisableOnClick)
+			{
+				javaScript.append(String.format((disable ? DISABLED : ENABLED), elementID));
+			}
+
+			if (disable)
+			{
+				onBefore(javaScript.toString());
+			}
+			else
+			{
+				onComplete(javaScript.toString());
+			}
 		}
 	}
 }

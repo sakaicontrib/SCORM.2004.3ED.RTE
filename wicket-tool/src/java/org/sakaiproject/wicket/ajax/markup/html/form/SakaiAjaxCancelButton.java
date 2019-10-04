@@ -18,8 +18,6 @@ package org.sakaiproject.wicket.ajax.markup.html.form;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-import org.sakaiproject.wicket.ajax.markup.html.form.SakaiAjaxButton;
-
 public class SakaiAjaxCancelButton extends SakaiAjaxButton
 {
 	private static final long serialVersionUID = 1L;

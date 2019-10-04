@@ -15,15 +15,13 @@
  */
 package org.sakaiproject.scorm.ui.console.pages;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.attributes.AjaxCallListener;
-import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -48,6 +46,7 @@ import org.sakaiproject.scorm.ui.console.pages.PackageConfigurationPage.Assessme
 import org.sakaiproject.scorm.ui.console.pages.PackageConfigurationPage.GradebookSetup;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.tool.api.Placement;
+import org.sakaiproject.wicket.ajax.markup.html.form.SakaiAjaxButton;
 import org.sakaiproject.wicket.ajax.markup.html.form.SakaiAjaxCancelButton;
 
 @Slf4j
@@ -109,16 +108,10 @@ public class PackageRemovePage extends ConsoleBasePage
 
 			final Label alertLabel = new Label( "alert", new ResourceModel( "verify.remove" ) );
 			final SakaiAjaxCancelButton btnCancel = new SakaiAjaxCancelButton( "btnCancel", PackageListPage.class );
-			IndicatingAjaxButton btnSubmit = new IndicatingAjaxButton( "btnSubmit", this )
+			btnCancel.setElementsToDisableOnClick( Arrays.asList( new String[] {"btnRemove"} ) );
+			SakaiAjaxButton btnRemove = new SakaiAjaxButton( "btnRemove", this )
 			{
 				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
-				{
-					super.updateAjaxAttributes(attributes);
-					attributes.getAjaxCallListeners().add(new AjaxCallListener().onAfter("this.disabled = true; document.getElementsByName( \"btnCancel\" )[0].disabled = true;"));
-				}
 
 				@Override
 				protected void onSubmit( AjaxRequestTarget target )
@@ -155,11 +148,12 @@ public class PackageRemovePage extends ConsoleBasePage
 					}
 				}
 			};
+			btnRemove.setElementsToDisableOnClick( Arrays.asList( new String[] {"btnCancel"} ) );
 
 			add( alertLabel );
 			add( removeTable );
 			add( btnCancel );
-			add( btnSubmit );
+			add( btnRemove );
 		}
 
 		private GradebookSetup getAssessmentSetup( ContentPackage contentPackage )
