@@ -18,6 +18,8 @@ package org.sakaiproject.scorm.service.impl;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.Properties;
 
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +66,8 @@ import org.sakaiproject.scorm.service.api.LearningManagementSystem;
 import org.sakaiproject.scorm.service.api.ScormApplicationService;
 import org.sakaiproject.scorm.service.api.ScormSequencingService;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
+import org.sakaiproject.service.gradebook.shared.GradebookService;
+import org.sakaiproject.util.ResourceLoader;
 
 @Slf4j
 public abstract class ScormApplicationServiceImpl implements ScormApplicationService
@@ -94,10 +98,13 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 
 	protected abstract DataManagerDao dataManagerDao();
 	public abstract GradebookExternalAssessmentService gradebookExternalAssessmentService();
+	public abstract GradebookService gradebookService();
 	protected abstract LearnerDao learnerDao();
 	protected abstract LearningManagementSystem lms();
 
 	IValidatorFactory validatorFactory = new ValidatorFactory();
+
+	private final ResourceLoader resourceLoader = new ResourceLoader("messages");
 
 	private IValidRequests commit(SessionBean sessionBean, IDataManager dm, ISequencer sequencer)
 	{
@@ -328,22 +335,22 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 		return result;
 	}
 
-	private double getRealValue(String element, IDataManager dataManager)
+	private OptionalDouble getRealValue(String element, IDataManager dataManager)
 	{
 		String result = getValue(element, dataManager);
 		if (StringUtils.isBlank(result) || result.equals("unknown"))
 		{
-			return -1.0;
+			return OptionalDouble.empty();
 		}
 
-		double d = -1.0;
+		OptionalDouble d = OptionalDouble.empty();
 		try
 		{
-			d = Double.parseDouble(result);
+			d = OptionalDouble.of(Double.parseDouble(result));
 		}
-		catch (NumberFormatException nfe)
+		catch (Exception ex)
 		{
-			log.error("Unable to parse {} as a double!", result, nfe);
+			log.error("Unable to parse {} as a double!", result, ex);
 		}
 
 		return d;
@@ -1202,15 +1209,17 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 		// (completed, incomplete, not_attempted, unknown)
 		String completionStatus = getValueAsString(CMI_COMPLETION_STATUS, dataManager);
 
-		// A real number with values that is accurate to seven significant decimal figures. The value shall be in the range of �1.0 to 1.0, inclusive.
-		double score = getRealValue(CMI_SCORE_SCALED, dataManager) * 100d;
-
 		if ("normal".equals(mode) && "completed".equals(completionStatus) && "credit".equals(credit))
 		{
 			String context = lms().currentContext();
-			long contentPackageId = sessionBean.getContentPackage().getContentPackageId();
-			String assessmentExternalId = "" + contentPackageId + ":" + dataManager.getScoId();
-			updateGradeBook(score, context, sessionBean.getLearnerId(), assessmentExternalId);
+			String learnerID = sessionBean.getLearnerId();
+			String assessmentExternalId = "" + sessionBean.getContentPackage().getContentPackageId() + ":" + dataManager.getScoId();
+
+			// A real number with values that is accurate to seven significant decimal figures. The value shall be in the range of -1.0 to +1.0, inclusive.
+			OptionalDouble score = getRealValue(CMI_SCORE_SCALED, dataManager);
+
+			// Logic to update score and/or comment lives in below method, pass the necessary data
+			updateGradebook(score, context, learnerID, assessmentExternalId);
 		}
 	}
 
@@ -1362,12 +1371,49 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 		}
 	}
 
-	protected void updateGradeBook(double score, String context, String learnerId, String assessmentExternalId)
+	/**
+	 * Handles all aspects of updating the gradebook when a user completes a module.
+	 * @param score contains the scaled score if one was recorded, otherwise empty Optional
+	 * @param context the current site ID/gradebook ID
+	 * @param learnerID the ID of the user who completed the module
+	 * @param externalAssessmentID the ID of the gradebook item to sync with
+	 */
+	protected void updateGradebook(OptionalDouble score, String context, String learnerID, String externalAssessmentID)
 	{
-		GradebookExternalAssessmentService service = gradebookExternalAssessmentService();
-		if (service.isGradebookDefined(context) && service.isExternalAssignmentDefined(context, assessmentExternalId))
+		GradebookExternalAssessmentService gbeService = gradebookExternalAssessmentService();
+
+		// Gradebook and gradebook item exist, carry on...
+		if (gbeService.isGradebookDefined(context) && gbeService.isExternalAssignmentDefined(context, externalAssessmentID))
 		{
-			service.updateExternalAssessmentScore(context, assessmentExternalId, learnerId, "" + score);
+			GradebookService gbService = gradebookService();
+			long internalAssessmentID = gbeService.getInternalAssessmentID(context, externalAssessmentID).orElse(-1l);
+			String existingComment = Optional.ofNullable(gbService.getAssignmentScoreComment(context, internalAssessmentID, learnerID).getCommentText()).filter(c -> !c.isEmpty()).orElse("");
+			String moduleNoScoreRecorded = resourceLoader.getString("moduleNoScoreRecorded");
+
+			if (score.isPresent()) // Module recorded a score...
+			{
+				// A real number with values that is accurate to seven significant decimal figures. The value shall be in the range of -1.0 to 1.0, inclusive.
+				double rawScore = score.getAsDouble() * 100d;
+
+				// We don't care about the presence of an existing grade; push the new/updated one
+				gbeService.updateExternalAssessmentScore(context, externalAssessmentID, learnerID, "" + rawScore);
+
+				// If there's an existing comment, we need to scan it for the presence of the "no grade recorded" message and remove it, but preserve any instructor added comments
+				if (existingComment.contains(moduleNoScoreRecorded))
+				{
+					String comment = existingComment.replaceAll(moduleNoScoreRecorded, "");
+					gbeService.updateExternalAssessmentComment(context, externalAssessmentID, learnerID, comment);
+				}
+			}
+			else // Module did not record a score...
+			{
+				// If there isn't already a comment indicating that this module didn't record grading data, add it
+				if (!existingComment.contains(moduleNoScoreRecorded))
+				{
+					String comment = moduleNoScoreRecorded + " " + existingComment;
+					gbeService.updateExternalAssessmentComment(context, externalAssessmentID, learnerID, comment);
+				}
+			}
 		}
 	}
 }
