@@ -187,13 +187,10 @@
     top: 3px;
 }
 
-h3 {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
 h3.formHeading {
-    margin-top: 25px
+    margin-top: 1.5em;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 div.form {
