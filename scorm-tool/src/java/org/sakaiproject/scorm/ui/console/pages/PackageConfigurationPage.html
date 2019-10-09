@@ -16,36 +16,45 @@
 				<input type="text" wicket:id="packageName" id="packageName" size="50" maxlength="200" />
 
 				<h3 class="formHeading"><wicket:message key="form.heading.availability"></wicket:message></h3>
-				<p class="instruction labelindnt">
-					<wicket:message key="form.instructions.open.date"></wicket:message>
-				</p>
-				<p class="shorttext form-required">
-					<label for="releaseOnDTF">
+				<div class="form form-group row form-required">
+					<label for="releaseOnDTF" class="col-sm-2 form-control-label">
 						<wicket:message key="form.label.open.date"></wicket:message>
 					</label>
-					<input type="text" wicket:id="releaseOnDTF" id="releaseOnDTF" />
-				</p>
-				<p class="shorttext">
-					<label for="dueOnDTF">
+					<div class="col-sm-6 form-inline">
+						<input type="text" wicket:id="releaseOnDTF" id="releaseOnDTF" />
+						<p class="text-muted small">
+							<wicket:message key="form.instructions.open.date"></wicket:message>
+						</p>
+					</div>
+				</div>
+				<div class="form form-group row">
+					<label for="dueOnDTF" class="col-sm-2 form-control-label">
 						<wicket:message key="form.label.due.date"></wicket:message>
 					</label>
-					<input type="text" wicket:id="dueOnDTF" id="dueOnDTF" />
-				</p>
-				<p class="instruction labelindnt">
-					<wicket:message key="form.instructions.accept.until"></wicket:message>
-				</p>
-				<p class="shorttext">
-					<label for="acceptUntilDTF">
+					<div class="col-sm-6 form-inline">
+						<input type="text" wicket:id="dueOnDTF" id="dueOnDTF" />
+					</div>
+				</div>
+				<div class="form form-group row">
+					<label for="acceptUntilDTF" class="col-sm-2 form-control-label">
 						<wicket:message key="form.label.accept.until"></wicket:message>
 					</label>
-					<input type="text" wicket:id="acceptUntilDTF" id="acceptUntilDTF"  />
-				</p>
-				<p class="shorttext">
-					<label for="numberOfTries">
+					<div class="col-sm-6 form-inline">
+						<input type="text" wicket:id="acceptUntilDTF" id="acceptUntilDTF" />
+						<p class="text-muted small">
+							<wicket:message key="form.instructions.accept.until"></wicket:message>
+						</p>
+					</div>
+				</div>
+				<div class="form form-group row">
+					<label for="numberOfTries" class="col-sm-4 form-control-label">
 						<wicket:message key="form.label.number.of.tries"></wicket:message>
 					</label>
-					<select wicket:id="numberOfTries" id="numberOfTries" />
-				</p>
+					<div class="col-sm-6 form-inline">
+						<select wicket:id="numberOfTries" id="numberOfTries" />
+					</div>
+				</div>
+
 				<h3><wicket:message key="form.heading.displayOptions"></wicket:message></h3>
 				<p class="shorttext">
 					<label for="hideTOC">
