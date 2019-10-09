@@ -8,13 +8,14 @@
 	<body>
 		<wicket:extend>
 			<form wicket:id="configurationForm">
-				<p class="shorttext form-required">
+				<div class="form form-required">
 					<label for="packageName">
 						<wicket:message key="form.label.package.name"></wicket:message>
 					</label>
-					<input type="text" wicket:id="packageName" id="packageName" size="50" maxlength="200" />
-				</p>
-				<h3><wicket:message key="form.heading.availability"></wicket:message></h3>
+				</div>
+				<input type="text" wicket:id="packageName" id="packageName" size="50" maxlength="200" />
+
+				<h3 class="formHeading"><wicket:message key="form.heading.availability"></wicket:message></h3>
 				<p class="instruction labelindnt">
 					<wicket:message key="form.instructions.open.date"></wicket:message>
 				</p>

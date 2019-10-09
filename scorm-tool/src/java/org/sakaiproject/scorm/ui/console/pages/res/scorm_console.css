@@ -180,7 +180,7 @@
     margin:0 1px;
 }
 
-.form-required label::before {
+.form-required label::after {
     content: "*";
     color: #c77070;
     position: relative;
@@ -190,4 +190,16 @@
 h3 {
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
+}
+
+h3.formHeading {
+    margin-top: 25px
+}
+
+div.form {
+    padding-top: 5px;
+}
+
+div.form label {
+    color: #555;
 }
