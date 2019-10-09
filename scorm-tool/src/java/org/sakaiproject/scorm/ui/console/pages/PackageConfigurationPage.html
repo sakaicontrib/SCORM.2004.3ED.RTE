@@ -9,7 +9,7 @@
 		<wicket:extend>
 			<form wicket:id="configurationForm">
 				<div class="form form-required">
-					<label for="packageName">
+					<label for="packageName" class="form-control-label">
 						<wicket:message key="form.label.package.name"></wicket:message>
 					</label>
 				</div>
@@ -46,22 +46,22 @@
 						</p>
 					</div>
 				</div>
-				<div class="form form-group row">
-					<label for="numberOfTries" class="col-sm-4 form-control-label">
+				<div>
+					<label for="numberOfTries" class="form-control-label">
 						<wicket:message key="form.label.number.of.tries"></wicket:message>
 					</label>
-					<div class="col-sm-6 form-inline">
-						<select wicket:id="numberOfTries" id="numberOfTries" />
-					</div>
+					<select wicket:id="numberOfTries" id="numberOfTries" />
 				</div>
 
 				<h3><wicket:message key="form.heading.displayOptions"></wicket:message></h3>
-				<p class="shorttext">
-					<label for="hideTOC">
+				<div class="form">
+					<label for="hideTOC" class="form-control-label">
+						<input type="checkbox" wicket:id="hideTOC" id="hideTOC" />
 						<wicket:message key="form.label.hide.toc"></wicket:message>
 					</label>
-					<input type="checkbox" wicket:id="hideTOC" id="hideTOC" />
-				</p>
+				</div>
+
+
 				<h3><wicket:message key="form.heading.grading"></wicket:message></h3>
 				<div wicket:id="scos">
 					<h3><span wicket:id="itemTitle"></span></h3>
