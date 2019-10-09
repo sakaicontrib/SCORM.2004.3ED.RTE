@@ -61,21 +61,29 @@
 					</label>
 				</div>
 
-
 				<h3><wicket:message key="form.heading.grading"></wicket:message></h3>
-				<div wicket:id="scos">
-					<h3><span wicket:id="itemTitle"></span></h3>
-					<p class="shorttext">
-						<div wicket:id="verifySyncWithGradebook" class="sak-banner-warn">
-							<wicket:message key="verify.synchronizeWithGradebook"></wicket:message>
-						</div>
-						<label wicket:for="synchronizeSCOWithGradebook">
-							<wicket:message key="form.label.synchronyse.with.gradebook"></wicket:message>
-						</label>
-						<input type="checkbox" wicket:id="synchronizeSCOWithGradebook"></input>
-					</p>
-					<p style="clear:both;"/>
-				</div>
+				<table id="gradeSyncTable" class="table table-hover table-striped" cellspacing="0">
+					<thead>
+						<tr>
+							<th><wicket:message key="form.gradingTable.itemTitle"></wicket:message></th>
+							<th class="checkboxColumn"><wicket:message key="form.gradingTable.enableGradebook"></wicket:message></th>
+						</tr>
+					</thead>
+					<tr wicket:id="scos">
+						<td>
+							<label wicket:for="synchronizeSCOWithGradebook">
+								<span wicket:id="itemTitle"></span>
+							</label>
+							<div wicket:id="verifySyncWithGradebook" class="sak-banner-warn">
+								<wicket:message key="verify.synchronizeWithGradebook"></wicket:message>
+							</div>
+						</td>
+						<td class="checkboxColumn">
+							<input type="checkbox" wicket:id="synchronizeSCOWithGradebook"></input>
+						</td>
+					</tr>
+				</table>
+
 				<div class="act">
 					<button wicket:id="btnUpdate" id="btnUpdate" type="submit" class="active"><wicket:message key="page.update">Submit</wicket:message></button>
 					<button wicket:id="btnCancel" id="btnCancel" type="submit"><wicket:message key="page.cancel">Cancel</wicket:message></button>
