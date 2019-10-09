@@ -186,3 +186,8 @@
     position: relative;
     top: 3px;
 }
+
+h3 {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
