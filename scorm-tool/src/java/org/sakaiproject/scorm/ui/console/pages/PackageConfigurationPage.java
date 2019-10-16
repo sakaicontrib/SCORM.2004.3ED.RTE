@@ -216,7 +216,7 @@ public class PackageConfigurationPage extends ConsoleBasePage
 		form.add(new SakaiDateTimeField("dueOnDTF", new PropertyModel(contentPackage, "zonedDueOn"), tz, true));
 		form.add(new SakaiDateTimeField("acceptUntilDTF", new PropertyModel(contentPackage, "zonedAcceptUntil"), tz, true));
 		form.add(new DropDownChoice("numberOfTries", new PropertyModel(contentPackage, "numberOfTries"), tryList, new TryChoiceRenderer()));
-		form.add(new CheckBox("hideTOC", new PropertyModel(contentPackage, "hideTOC")));
+		form.add(new CheckBox("showTOC", new PropertyModel(contentPackage, "showTOC")));
 
 		ListView scos;
 		form.add(scos = new ListView("scos", gradebookSetup.getAssessments())
