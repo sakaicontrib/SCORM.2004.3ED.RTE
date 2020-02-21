@@ -4,6 +4,12 @@ For Sakai 11+, the following sakai.property needs to be set (as a result of Saka
 
 portal.iframesuppress=:all:sakai.scorm.singlepackage.tool:sakai.scorm.tool
 
+## Oracle support:
+
+There is a known issue with auto.ddl creating the SCORM tables. This issue is being tracked @ https://jira.sakaiproject.org/browse/SCO-84
+
+The workaround is to either create all the SCORM tables manually (with a provided script), or manually change some datatypes on specific columns that cause the problem. Both workarounds are explained in Confluence @ https://confluence.sakaiproject.org/display/SCORMPLAYER/Sakai+SCORM+player+installation+guide#SakaiSCORMplayerinstallationguide-OracleSupport
+
 ## Historical Info
 
 This project was originally developed and maintained by UC Davis and made available on an ECL 1 license.
