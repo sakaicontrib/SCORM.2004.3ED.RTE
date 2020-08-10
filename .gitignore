@@ -8,4 +8,11 @@
 /tool/target/
 /wicket-tool/target/
 /scorm-tool/target/
+<<<<<<< HEAD
 /scorm-tool/contentPackages/
+=======
+/scorm-tool/contentPackages/
+/target/
+.idea
+*.iml
+>>>>>>> 108daac... SCO-171 Tomcat startup error for missing type on AbstractSSPDataModel#mManaged (#50)
