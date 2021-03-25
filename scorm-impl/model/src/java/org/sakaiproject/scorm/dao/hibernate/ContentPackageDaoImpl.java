@@ -48,7 +48,7 @@ public class ContentPackageDaoImpl extends HibernateDaoSupport implements Conten
 	@Override
 	public List<ContentPackage> find(String context)
 	{
-		String statement = new StringBuilder("from ").append(ContentPackage.class.getName()).append(" where context = ? and deleted = ? ").toString();
+		String statement = new StringBuilder("from ").append(ContentPackage.class.getName()).append(" where context = ?0 and deleted = ?1 ").toString();
 		return (List<ContentPackage>) getHibernateTemplate().find(statement, new Object[] { context, false });
 	}
 
@@ -66,7 +66,7 @@ public class ContentPackageDaoImpl extends HibernateDaoSupport implements Conten
 	@Override
 	public ContentPackage loadByResourceId(String resourceId)
 	{
-		String statement = new StringBuilder("from ").append(ContentPackage.class.getName()).append(" where resourceId = ? and deleted = ? ").toString();
+		String statement = new StringBuilder("from ").append(ContentPackage.class.getName()).append(" where resourceId = ?0 and deleted = ?1 ").toString();
 		List<ContentPackage> result = (List<ContentPackage>) getHibernateTemplate().find(statement, new Object[] { resourceId, false });
 
 		if (result.isEmpty())
