@@ -67,14 +67,14 @@ public class AttemptDaoImpl extends HibernateDaoSupport implements AttemptDao
 	@Override
 	public List<Attempt> find(long contentPackageId)
 	{
-		return (List<Attempt>) getHibernateTemplate().find("from " + Attempt.class.getName() + " where contentPackageId=? ", new Object[] { contentPackageId });
+		return (List<Attempt>) getHibernateTemplate().find("from " + Attempt.class.getName() + " where contentPackageId=?0 ", new Object[] { contentPackageId });
 	}
 
 	@Override
 	public List<Attempt> find(long contentPackageId, String learnerId)
 	{
 		StringBuilder buffer = new StringBuilder();
-		buffer.append("from ").append(Attempt.class.getName()).append(" where contentPackageId=? and learnerId=? order by attemptNumber desc");
+		buffer.append("from ").append(Attempt.class.getName()).append(" where contentPackageId=?0 and learnerId=?1 order by attemptNumber desc");
 		return (List<Attempt>) getHibernateTemplate().find(buffer.toString(), new Object[] { contentPackageId, learnerId });
 	}
 
@@ -82,7 +82,7 @@ public class AttemptDaoImpl extends HibernateDaoSupport implements AttemptDao
 	public List<Attempt> find(String courseId, String learnerId)
 	{
 		StringBuilder buffer = new StringBuilder();
-		buffer.append("from ").append(Attempt.class.getName()).append(" where courseId=? and learnerId=? order by attemptNumber desc");
+		buffer.append("from ").append(Attempt.class.getName()).append(" where courseId=?0 and learnerId=?1 order by attemptNumber desc");
 		return (List<Attempt>) getHibernateTemplate().find(buffer.toString(), new Object[] { courseId, learnerId });
 	}
 
@@ -90,7 +90,7 @@ public class AttemptDaoImpl extends HibernateDaoSupport implements AttemptDao
 	public Attempt find(String courseId, String learnerId, long attemptNumber)
 	{
 		StringBuilder buffer = new StringBuilder();
-		buffer.append("from ").append(Attempt.class.getName()).append(" where courseId=? and learnerId=? and attemptNumber=? ");
+		buffer.append("from ").append(Attempt.class.getName()).append(" where courseId=?0 and learnerId=?1 and attemptNumber=?2 ");
 		List<Attempt> r = (List<Attempt>) getHibernateTemplate().find(buffer.toString(), new Object[] { courseId, learnerId, attemptNumber });
 		if (r.isEmpty())
 		{

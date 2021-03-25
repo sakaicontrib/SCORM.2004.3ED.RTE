@@ -32,7 +32,7 @@ public class SeqActivityTreeDaoImpl extends HibernateDaoSupport implements SeqAc
 	@Override
 	public ISeqActivityTree find(long contentPackageId, String userId)
 	{
-		List r = getHibernateTemplate().find("from " + SeqActivityTree.class.getName() + " where contentPackageId=? and mLearnerID=?", new Object[] { contentPackageId, userId });
+		List r = getHibernateTemplate().find("from " + SeqActivityTree.class.getName() + " where contentPackageId=?0 and mLearnerID=?1", new Object[] { contentPackageId, userId });
 
 		log.info("SeqActivityTreeDAO::find: records: {}", r.size());
 
@@ -46,7 +46,7 @@ public class SeqActivityTreeDaoImpl extends HibernateDaoSupport implements SeqAc
 
 	public SeqActivityTreeSnapshot findSnapshot(String courseId, String userId)
 	{
-		List r = getHibernateTemplate().find("from " + SeqActivityTreeSnapshot.class.getName() + " where mCourseID=? and mLearnerID=?", new Object[] { courseId, userId });
+		List r = getHibernateTemplate().find("from " + SeqActivityTreeSnapshot.class.getName() + " where mCourseID=?0 and mLearnerID=?1", new Object[] { courseId, userId });
 
 		log.info("SeqActivityTreeDAO::findSnapshot: records: {}", r.size());
 
@@ -60,7 +60,7 @@ public class SeqActivityTreeDaoImpl extends HibernateDaoSupport implements SeqAc
 
 	public List<SeqActivityTreeSnapshot> findUserSnapshots(String userId)
 	{
-		List r = getHibernateTemplate().find("from " + SeqActivityTreeSnapshot.class.getName() + " where mLearnerID=?", new Object[] { userId });
+		List r = getHibernateTemplate().find("from " + SeqActivityTreeSnapshot.class.getName() + " where mLearnerID=?0", new Object[] { userId });
 
 		log.info("SeqActivityTreeDAO::findUserSnapshots: records: {}", r.size());
 

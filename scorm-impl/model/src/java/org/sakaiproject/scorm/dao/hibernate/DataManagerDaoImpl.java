@@ -34,7 +34,7 @@ public class DataManagerDaoImpl extends HibernateDaoSupport implements DataManag
 	public List<IDataManager> find(long contentPackageId, String learnerId, long attemptNumber)
 	{
 		StringBuilder buffer = new StringBuilder();
-		buffer.append("from ").append(SCODataManager.class.getName()).append(" where contentPackageId=? and userId=? and attemptNumber=? ");
+		buffer.append("from ").append(SCODataManager.class.getName()).append(" where contentPackageId=?0 and userId=?1 and attemptNumber=?2 ");
 		return (List<IDataManager>) getHibernateTemplate().find(buffer.toString(), new Object[] { contentPackageId, learnerId, attemptNumber });
 	}
 
@@ -42,7 +42,7 @@ public class DataManagerDaoImpl extends HibernateDaoSupport implements DataManag
 	public IDataManager find(long contentPackageId, String learnerId, long attemptNumber, String scoId)
 	{
 		StringBuilder buffer = new StringBuilder();
-		buffer.append("from ").append(SCODataManager.class.getName()).append(" where contentPackageId=? and userId=? and attemptNumber=? and scoId=?");
+		buffer.append("from ").append(SCODataManager.class.getName()).append(" where contentPackageId=?0 and userId=?1 and attemptNumber=?2 and scoId=?3");
 		List r = getHibernateTemplate().find(buffer.toString(), new Object[] { contentPackageId, learnerId, attemptNumber, scoId });
 
 		if (r.isEmpty())
@@ -56,7 +56,7 @@ public class DataManagerDaoImpl extends HibernateDaoSupport implements DataManag
 
 	public List<IDataManager> find(String courseId)
 	{
-		List r = getHibernateTemplate().find("from " + SCODataManager.class.getName() + " where courseId=? ", new Object[] { courseId });
+		List r = getHibernateTemplate().find("from " + SCODataManager.class.getName() + " where courseId=?0 ", new Object[] { courseId });
 		return r;
 	}
 
@@ -96,7 +96,7 @@ public class DataManagerDaoImpl extends HibernateDaoSupport implements DataManag
 	{
 		StringBuilder buffer = new StringBuilder();
 		buffer.append("from ").append(SCODataManager.class.getName());
-		buffer.append(" where contentPackageId=? and activityId=? and userId=? and attemptNumber=? ");
+		buffer.append(" where contentPackageId=?0 and activityId=?1 and userId=?2 and attemptNumber=?3 ");
 		List r = getHibernateTemplate().find(buffer.toString(), new Object[] { contentPackageId, activityId, userId, attemptNumber });
 
 		log.debug("DataManagerDaoImpl::findByActivityId: records: {}", r.size());
