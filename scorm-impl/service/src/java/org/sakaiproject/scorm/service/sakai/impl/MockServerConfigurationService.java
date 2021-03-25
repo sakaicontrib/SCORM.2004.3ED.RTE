@@ -259,4 +259,8 @@ public class MockServerConfigurationService implements ServerConfigurationServic
         throw new UnsupportedOperationException( "Not supported yet." );
     }
 
+    @Override
+    public long getLong(String name, long dflt) {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
 }
