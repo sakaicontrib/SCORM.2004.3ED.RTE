@@ -39,6 +39,12 @@ public class MockServerConfigurationService implements ServerConfigurationServic
     }
 
     @Override
+    public Set<String> getCommaSeparatedListAsSet( String key )
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
+
+    @Override
     public <T> T getConfig( String name, T defaultValue )
     {
         throw new UnsupportedOperationException( "Not supported yet." );
@@ -88,6 +94,12 @@ public class MockServerConfigurationService implements ServerConfigurationServic
 
     @Override
     public String getLoggedOutUrl()
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
+
+    @Override
+    public long getLong( String name, long dflt )
     {
         throw new UnsupportedOperationException( "Not supported yet." );
     }
