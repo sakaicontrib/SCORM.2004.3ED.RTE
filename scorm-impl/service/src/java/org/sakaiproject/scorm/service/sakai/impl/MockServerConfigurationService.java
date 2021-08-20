@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 import org.sakaiproject.component.api.ServerConfigurationService;
 
@@ -34,12 +33,6 @@ public class MockServerConfigurationService implements ServerConfigurationServic
 
     @Override
     public List<String> getCategoryGroups( String category )
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
-
-    @Override
-    public Set<String> getCommaSeparatedListAsSet( String string )
     {
         throw new UnsupportedOperationException( "Not supported yet." );
     }
