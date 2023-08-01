@@ -381,7 +381,7 @@ public class PackageConfigurationPage extends ConsoleBasePage
 		final GradebookSetup gradebookSetup = new GradebookSetup();
 		String context = getContext();
 		boolean isGradebookDefined = false;
-		try { isGradebookDefined = siteService.getSite(context).getToolForCommonId("sakai.grades") != null; }
+		try { isGradebookDefined = siteService.getSite(context).getToolForCommonId("sakai.gradebookng") != null; }
 		catch (IdUnusedException e) { /* No gradebook, ignore */ }
 
 		gradebookSetup.setGradebookDefined(isGradebookDefined);
