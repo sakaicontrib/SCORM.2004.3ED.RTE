@@ -65,12 +65,6 @@ public class MockSiteService implements SiteService
     }
 
     @Override
-    public Site addSite( String id, Site other, String realmTemplate ) throws IdInvalidException, IdUsedException, PermissionException
-    {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void addSiteAdvisor( SiteAdvisor advisor )
     {
     }
@@ -90,6 +84,12 @@ public class MockSiteService implements SiteService
     public boolean allowAddCourseSite()
     {
         return false;
+    }
+
+    @Override
+    public boolean allowAddPortfolioSite()
+    {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -130,12 +130,6 @@ public class MockSiteService implements SiteService
 
     @Override
     public boolean allowUpdateGroupMembership( String id )
-    {
-        return false;
-    }
-
-    @Override
-    public boolean allowUpdateGroupMembership( String siteId, String groupId )
     {
         return false;
     }
@@ -306,18 +300,6 @@ public class MockSiteService implements SiteService
     public List<String> getSiteIds( SelectionType type, Object ofType, String criteria, Map<String, String> propertyCriteria, Map<String, String> propertyRestrictions, SortType sort, PagingPosition page, String userId )
     {
         return Collections.emptyList();
-    }
-
-    @Override
-    public Optional<Locale> getSiteLocale( String siteId )
-    {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Locale> getSiteLocale( Site site )
-    {
-        return Optional.empty();
     }
 
     @Override
