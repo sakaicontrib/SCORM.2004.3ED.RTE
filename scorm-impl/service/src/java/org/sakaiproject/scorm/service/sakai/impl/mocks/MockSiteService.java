@@ -135,12 +135,6 @@ public class MockSiteService implements SiteService
     }
 
     @Override
-    public boolean allowUpdateGroupMembership( String siteId, String groupId )
-    {
-        return false;
-    }
-
-    @Override
     public boolean allowUpdateSite( String id )
     {
         return false;
@@ -306,18 +300,6 @@ public class MockSiteService implements SiteService
     public List<String> getSiteIds( SelectionType type, Object ofType, String criteria, Map<String, String> propertyCriteria, Map<String, String> propertyRestrictions, SortType sort, PagingPosition page, String userId )
     {
         return Collections.emptyList();
-    }
-
-    @Override
-    public Optional<Locale> getSiteLocale( String siteId )
-    {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Locale> getSiteLocale( Site site )
-    {
-        return Optional.empty();
     }
 
     @Override
