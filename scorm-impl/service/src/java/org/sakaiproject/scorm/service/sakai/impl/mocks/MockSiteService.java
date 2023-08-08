@@ -65,12 +65,6 @@ public class MockSiteService implements SiteService
     }
 
     @Override
-    public Site addSite( String id, Site other, String realmTemplate ) throws IdInvalidException, IdUsedException, PermissionException
-    {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void addSiteAdvisor( SiteAdvisor advisor )
     {
     }
@@ -90,6 +84,12 @@ public class MockSiteService implements SiteService
     public boolean allowAddCourseSite()
     {
         return false;
+    }
+
+    @Override
+    public boolean allowAddPortfolioSite()
+    {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -135,12 +135,6 @@ public class MockSiteService implements SiteService
     }
 
     @Override
-    public boolean allowUpdateGroupMembership( String siteId, String groupId )
-    {
-        return false;
-    }
-
-    @Override
     public boolean allowUpdateSite( String id )
     {
         return false;
@@ -161,7 +155,7 @@ public class MockSiteService implements SiteService
     @Override
     public String archive( String siteId, Document doc, Stack<Element> stack, String archivePath, List<Reference> attachments )
     {
-        return SiteService.super.archive( siteId, doc, stack, archivePath, attachments );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -209,31 +203,31 @@ public class MockSiteService implements SiteService
     @Override
     public Entity getEntity( Reference ref )
     {
-        return SiteService.super.getEntity( ref );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
     public Collection<String> getEntityAuthzGroups( Reference ref, String userId )
     {
-        return SiteService.super.getEntityAuthzGroups( ref, userId );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
     public String getEntityDescription( Reference ref )
     {
-        return SiteService.super.getEntityDescription( ref );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
     public ResourceProperties getEntityResourceProperties( Reference ref )
     {
-        return SiteService.super.getEntityResourceProperties( ref );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
     public String getEntityUrl( Reference ref )
     {
-        return SiteService.super.getEntityUrl( ref );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -245,7 +239,7 @@ public class MockSiteService implements SiteService
     @Override
     public HttpAccess getHttpAccess()
     {
-        return SiteService.super.getHttpAccess();
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -257,7 +251,7 @@ public class MockSiteService implements SiteService
     @Override
     public String getLabel()
     {
-        return SiteService.super.getLabel();
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -306,18 +300,6 @@ public class MockSiteService implements SiteService
     public List<String> getSiteIds( SelectionType type, Object ofType, String criteria, Map<String, String> propertyCriteria, Map<String, String> propertyRestrictions, SortType sort, PagingPosition page, String userId )
     {
         return Collections.emptyList();
-    }
-
-    @Override
-    public Optional<Locale> getSiteLocale( String siteId )
-    {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Locale> getSiteLocale( Site site )
-    {
-        return Optional.empty();
     }
 
     @Override
@@ -526,13 +508,13 @@ public class MockSiteService implements SiteService
     @Override
     public String merge( String siteId, Element root, String archivePath, String fromSiteId, Map<String, String> attachmentNames, Map<String, String> userIdTrans, Set<String> userListAllowImport )
     {
-        return SiteService.super.merge( siteId, root, archivePath, fromSiteId, attachmentNames, userIdTrans, userListAllowImport );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
     public boolean parseEntityReference( String reference, Reference ref )
     {
-        return SiteService.super.parseEntityReference( reference, ref );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -641,6 +623,6 @@ public class MockSiteService implements SiteService
     @Override
     public boolean willArchiveMerge()
     {
-        return SiteService.super.willArchiveMerge();
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 }

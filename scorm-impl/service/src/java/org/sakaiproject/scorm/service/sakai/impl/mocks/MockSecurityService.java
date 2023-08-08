@@ -32,21 +32,27 @@ import org.sakaiproject.user.api.User;
  */
 public class MockSecurityService implements SecurityService
 {
-
-    @Override
-    public void changeToRoleViewOnSite( Site site, String role ) throws SakaiException
-    {
-    }
-
     @Override
     public void clearAdvisors()
     {
     }
 
     @Override
-    public String getUserEffectiveRole()
+    public void clearUserEffectiveRole( String azGroupId )
     {
-        return "";
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
+
+    @Override
+    public void clearUserEffectiveRoles()
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
+
+    @Override
+    public String getUserEffectiveRole( String azGroupId )
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -71,6 +77,12 @@ public class MockSecurityService implements SecurityService
     public boolean isUserRoleSwapped() throws IdUnusedException
     {
         return false;
+    }
+
+    @Override
+    public boolean isUserRoleSwapped( String siteId ) throws IdUnusedException
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override

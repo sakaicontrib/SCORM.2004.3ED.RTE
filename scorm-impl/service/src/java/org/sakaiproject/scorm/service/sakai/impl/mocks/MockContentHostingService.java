@@ -279,7 +279,7 @@ public class MockContentHostingService implements ContentHostingService
     @Override
     public String archive( String siteId, Document doc, Stack<Element> stack, String archivePath, List<Reference> attachments )
     {
-        return ContentHostingService.super.archive( siteId, doc, stack, archivePath, attachments );
+        return "";
     }
 
     @Override
@@ -483,7 +483,7 @@ public class MockContentHostingService implements ContentHostingService
     @Override
     public Entity getEntity( Reference ref )
     {
-        return ContentHostingService.super.getEntity( ref );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -495,19 +495,19 @@ public class MockContentHostingService implements ContentHostingService
     @Override
     public String getEntityDescription( Reference ref )
     {
-        return ContentHostingService.super.getEntityDescription( ref );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
     public ResourceProperties getEntityResourceProperties( Reference ref )
     {
-        return ContentHostingService.super.getEntityResourceProperties( ref );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
     public String getEntityUrl( Reference ref )
     {
-        return ContentHostingService.super.getEntityUrl( ref );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -541,15 +541,9 @@ public class MockContentHostingService implements ContentHostingService
     }
 
     @Override
-    public List<String> getHtmlForRefMimetypes()
-    {
-        return Collections.emptyList();
-    }
-
-    @Override
     public HttpAccess getHttpAccess()
     {
-        return ContentHostingService.super.getHttpAccess();
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -559,15 +553,9 @@ public class MockContentHostingService implements ContentHostingService
     }
 
     @Override
-    public String getInstructorUploadFolderName()
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
-
-    @Override
     public String getLabel()
     {
-        return ContentHostingService.super.getLabel();
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
@@ -614,12 +602,6 @@ public class MockContentHostingService implements ContentHostingService
 
     @Override
     public String getSiteCollection( String siteId )
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
-
-    @Override
-    public String getStudentUploadFolderName()
     {
         throw new UnsupportedOperationException( "Not supported yet." );
     }
@@ -697,12 +679,6 @@ public class MockContentHostingService implements ContentHostingService
     }
 
     @Override
-    public boolean isIndividualDropbox( String entityId )
-    {
-        return false;
-    }
-
-    @Override
     public boolean isInheritingPubView( String id )
     {
         return false;
@@ -710,12 +686,6 @@ public class MockContentHostingService implements ContentHostingService
 
     @Override
     public boolean isInheritingRoleView( String id, String roleId )
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isInsideIndividualDropbox( String entityId )
     {
         return false;
     }
@@ -751,12 +721,6 @@ public class MockContentHostingService implements ContentHostingService
     }
 
     @Override
-    public boolean isSiteLevelDropbox( String entityId )
-    {
-        return false;
-    }
-
-    @Override
     public boolean isSortByPriorityEnabled()
     {
         return false;
@@ -770,7 +734,7 @@ public class MockContentHostingService implements ContentHostingService
     @Override
     public String merge( String siteId, Element root, String archivePath, String fromSiteId, Map<String, String> attachmentNames, Map<String, String> userIdTrans, Set<String> userListAllowImport )
     {
-        return ContentHostingService.super.merge( siteId, root, archivePath, fromSiteId, attachmentNames, userIdTrans, userListAllowImport );
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
     @Override
