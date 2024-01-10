@@ -135,6 +135,12 @@ public class MockSiteService implements SiteService
     }
 
     @Override
+    public boolean allowUpdateGroupMembership(String siteId, String groupId)
+    {
+        return false;
+    }
+
+    @Override
     public boolean allowUpdateSite( String id )
     {
         return false;
@@ -624,5 +630,10 @@ public class MockSiteService implements SiteService
     public boolean willArchiveMerge()
     {
         return SiteService.super.willArchiveMerge();
+    }
+
+    @Override
+    public String idFromSiteReference(String ref) {
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 }
